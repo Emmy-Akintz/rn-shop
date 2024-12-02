@@ -8,6 +8,6 @@ export type Product = {
   imagesUrl: ImageSourcePropType[];
   price: number;
   heroImage: ImageSourcePropType;
-  category: Omit<Category, 'products'>;
-  maxQuantity: number;
+  category?: Omit<Category, 'products'>;
+  maxQuantity?: number;
 };
