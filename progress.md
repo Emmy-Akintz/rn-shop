@@ -1,7 +1,7 @@
 
 # My Progress
 
-- 1:44:28
+- 1:52:03
 
 ## Total time
 
