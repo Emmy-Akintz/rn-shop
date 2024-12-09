@@ -1,18 +1,24 @@
 import { Session } from "@supabase/supabase-js";
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import {
+    createContext,
+    PropsWithChildren,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 import { supabase } from "../lib/supabase";
 
 type AuthData = {
     session: Session | null;
     mounting: boolean;
     user: any;
-}
+};
 
 const AuthContext = createContext<AuthData>({
     session: null,
     mounting: true,
-    user: null
-})
+    user: null,
+});
 
 export default function AuthProvider({ children }: PropsWithChildren) {
     const [session, setSession] = useState<Session | null>(null);
@@ -27,19 +33,19 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
             setSession(session);
 
-            if (session) {
-                const { data: user, error } = await supabase
-                    .from("users")
-                    .select("*")
-                    .eq("id", session.user.id)
-                    .single();
+            // if (session) {
+            //     const { data: user, error } = await supabase
+            //         .from("users")
+            //         .select("*")
+            //         .eq("id", session.user.id)
+            //         .single();
 
-                if (error) {
-                    console.error('error', error);
-                } else {
-                    setUser(user);
-                }
-            }
+            //     if (error) {
+            //         console.error('error', error);
+            //     } else {
+            //         setUser(user);
+            //     }
+            // }
 
             setMounting(false);
         };
@@ -47,12 +53,14 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         fetchSession();
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
-        })
+        });
     }, []);
 
     return (
-        <AuthContext.Provider value={{ session, mounting, user }}>{children}</AuthContext.Provider>
-    )
+        <AuthContext.Provider value={{ session, mounting, user }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export const useAuth = () => useContext(AuthContext);

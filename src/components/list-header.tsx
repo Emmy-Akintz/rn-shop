@@ -1,34 +1,47 @@
 import { Link } from "expo-router";
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+    FlatList,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { mobileWidth } from "../../constants/mobile-dimensions";
 import { CATEGORIES } from "../../assets/categories";
 import { useCartStore } from "../store/cart-store";
+import { supabase } from "../lib/supabase";
 
 export const ListHeader = () => {
     const { getItemCount } = useCartStore();
-    
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+    };
+
     return (
         <View style={styles.headerContainer}>
             <View style={styles.headerTop}>
                 <View style={styles.headerLeft}>
                     <View style={styles.avatarContainer}>
                         <Image
-                            source={{ uri: 'https://via.placeholder.com/40' }}
+                            source={{ uri: "https://via.placeholder.com/40" }}
                             style={styles.avatarImage}
                         />
                         <Text style={styles.avatarText}>Hello Emmy_Akintz</Text>
                     </View>
                 </View>
                 <View style={styles.headerRight}>
-                    <Link style={styles.cartContainer} href='/cart' asChild>
+                    <Link style={styles.cartContainer} href="/cart" asChild>
                         <Pressable>
                             {({ pressed }) => (
                                 <View>
                                     <FontAwesome
                                         name="shopping-cart"
                                         size={25}
-                                        color='gray'
+                                        color="gray"
                                         style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                                     />
 
@@ -39,14 +52,17 @@ export const ListHeader = () => {
                             )}
                         </Pressable>
                     </Link>
-                    <TouchableOpacity style={styles.signOutButton}>
-                        <FontAwesome name="sign-out" size={25} color='red' />
+                    <TouchableOpacity
+                        onPress={handleSignOut}
+                        style={styles.signOutButton}
+                    >
+                        <FontAwesome name="sign-out" size={25} color="red" />
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.heroContainer}>
                 <Image
-                    source={require('../../assets/images/hero.png')}
+                    source={require("../../assets/images/hero.png")}
                     style={styles.heroImage}
                 />
             </View>
@@ -65,7 +81,7 @@ export const ListHeader = () => {
                             </Pressable>
                         </Link>
                     )}
-                    keyExtractor={item => item.name}
+                    keyExtractor={(item) => item.name}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 />
