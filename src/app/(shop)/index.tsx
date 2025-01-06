@@ -5,6 +5,8 @@ import { ListHeader } from "../../components/list-header";
 import { useAuth } from "../../providers/auth-provider";
 
 const Home = () => {
+    const { user } = useAuth();
+    console.log(user);
     return (
         <View>
             <FlatList
